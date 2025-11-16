@@ -1,84 +1,63 @@
 # 🩺 End-to-End Heart Disease Prediction Pipeline
 
-This repository contains a complete machine learning project to predict heart disease using the **Heart Disease UCI dataset**. It implements an end-to-end pipeline, starting from data cleaning and exploratory data analysis (EDA), moving through feature engineering and model comparison, and concluding with model deployment in a live web application.
+This repository contains a machine learning project to predict heart disease using the **Heart Disease UCI dataset**. It implements an end-to-end pipeline, starting from data cleaning and exploratory data analysis (EDA), moving through feature engineering, and concluding with a baseline model evaluation.
 
 ---
 
-## Project Status
+## 🚀 Project Status
 
-**🚧 In Progress 🚧**
+**✅ Completed Stages:**
+* **Data Preprocessing & Cleaning**
+* **Exploratory Data Analysis (EDA)**
+* **Feature Engineering (PCA, RF Importance, RFE)**
+* **Baseline Model Training (Logistic Regression)**
 
-This project is in active development. The workflow below outlines all planned steps.
-
-* **[Done]** 2.1: Data Preprocessing & Cleaning
-* **[Done]** 2.2: Dimensionality Reduction (PCA)
-* **[Done]** 2.3: Feature Selection (RF & RFE)
-* **[Done]** 2.4: Supervised Learning (Baseline `LogisticRegression`)
-* **[Up Next]** 2.4: Supervised Learning (Comparing KNN, SVM, Decision Trees)
-* **[Todo]** 2.5: Unsupervised Learning (Clustering)
-* **[Todo]** 2.6: Hyperparameter Tuning
-* **[Todo]** 2.7: Model Export
-* **[Todo]** 2.8: Streamlit Web UI
-* **[Todo]** 2.9: Deployment
+This README reflects all work completed to date. The project is modular, allowing for more models and features to be added.
 
 ---
 
-## 🚀 Project Workflow
+## 📊 Completed Workflow
 
-This project is broken down into the following distinct stages:
+This project has successfully implemented the following workflow:
 
-### 2.1 Data Preprocessing & Cleaning
-* **Load Data:** Load the `processed_cleveland.csv` dataset and assign descriptive column names.
-* **Handle Missing Values:** Replace `'?'` placeholders with `np.nan`.
-* **Imputation:** Fill missing values for categorical features (`ca`, `thal`) using the mode (most frequent value).
-* **EDA:** Perform exploratory data analysis with `histplot` and `boxplot` for numerical features and `countplot` for categorical features.
-* **Target Variable:** Binarize the target `num` (diagnosis) into `0` (No Disease) and `1` (Has Disease).
+### 1. Data Preprocessing & Cleaning
+* **Loaded Data:** The `processed_cleveland.csv` dataset was loaded, and descriptive column names were assigned.
+* **Handled Missing Values:** Replaced `'?'` placeholders with `np.nan`.
+* **Imputation:** Filled missing values for `ca` and `thal` using the mode.
+* **Target Variable:** Binarized the target `num` (diagnosis) into **0 (No Disease)** and **1 (Has Disease)**.
+* **Scaling:** Applied `StandardScaler` (to `age`, `thalach`) and `RobustScaler` (to `oldpeak`, `chol`, `trestbps`) to normalize feature distributions.
+* **Encoding:** Applied `OneHotEncoder` to the categorical `thal` feature.
 
-### 2.2 Dimensionality Reduction - PCA
-* **Apply PCA:** Use Principal Component Analysis to reduce the dimensionality of the feature set.
-* **Analyze Variance:** Plot the cumulative explained variance to determine the optimal number of components to retain (e.g., 10 components capturing 95% of the variance).
+### 2. Exploratory Data Analysis (EDA)
+* **Visualized Distributions:** Generated `histplot` and `boxplot` for numerical features (`age`, `chol`, etc.) to check for outliers and skew.
+* **Analyzed Categories:** Used `countplot` for categorical features (`sex`, `cp`, etc.) to understand class balances.
+* **Correlation Analysis:** Generated a `heatmap` to visualize the correlation matrix between features.
 
-### 2.3 Feature Selection
-Compare different automated feature selection techniques to create optimal subsets of features.
-* **Random Forest Importance:** Train a `RandomForestClassifier` and select the top 9 features based on Gini importance.
-* **Recursive Feature Elimination (RFE):** Use `RFE` with a `LogisticRegression` estimator to programmatically select the 9 most impactful features.
+### 3. Feature Engineering & Selection
+Three distinct feature sets were engineered to compare model performance:
 
-### 2.4 Supervised Learning - Classification Models
-Train and evaluate multiple classification models on the different feature sets (Full, PCA, RF-selected, RFE-selected) to find the best performer.
-* **Data Split:** Split all datasets into 80% training and 20% testing sets.
-* **Models:**
-    * Logistic Regression (Baseline)
-    * K-Nearest Neighbors (KNN)
-    * Decision Trees
-    * Support Vector Machine (SVM)
-* **Evaluation:** Assess models using `accuracy_score`, `precision`, `recall`, `f1-score`, and a confusion matrix.
+* **A) Principal Component Analysis (PCA):**
+    * Applied PCA to the full dataset.
+    * Plotted the cumulative explained variance and selected the **top 10 principal components** (which retained ~95% of the variance).
 
-### 2.5 Unsupervised Learning - Clustering
-* **K-Means Clustering:** Apply K-Means to identify natural groupings in the data. Use the "Elbow Method" to determine the optimal number of clusters (K).
-* **Hierarchical Clustering:** Use agglomerative clustering and plot a dendrogram to analyze the data's hierarchical structure.
+* **B) Random Forest Feature Importance:**
+    * Trained a `RandomForestClassifier` on the full dataset.
+    * Extracted and ranked features by Gini importance, selecting the **top 9 features**.
 
-### 2.6 Hyperparameter Tuning
-* **Optimize Best Model:** Take the best-performing model from step 2.4.
-* **Tune:** Use `GridSearchCV` or `RandomizedSearchCV` to find the optimal set of hyperparameters, maximizing the evaluation metric (e.g., F1-score or Accuracy).
+* **C) Recursive Feature Elimination (RFE):**
+    * Used `RFE` with a `LogisticRegression` estimator.
+    * Programmatically selected the **top 9 features**.
 
-### 2.7 Model Export & Deployment
-* **Create Pipeline:** Build a formal `sklearn.pipeline.Pipeline` that includes all preprocessing steps (scaling, encoding) and the final tuned model.
-* **Save Model:** Export the entire pipeline object as a `.pkl` or `.joblib` file for later use.
-
-### 2.8 Streamlit Web UI Development [Bonus]
-* **Build Interface:** Create an interactive web application using Streamlit.
-* **User Inputs:** Add UI components (sliders, text inputs, dropdowns) for a user to input their own health metrics.
-* **Live Prediction:** Load the saved model pipeline to provide a real-time "Heart Disease" (Yes/No) prediction based on user inputs.
-
-### 2.9 Deployment using Ngrok [Bonus]
-* **Run Locally:** Serve the Streamlit application locally.
-* **Expose Publicly:** Use `Ngrok` to create a secure public URL, making the web application accessible to anyone on the internet for demonstration.
+### 4. Baseline Model Training
+* **Data Split:** All three feature sets (PCA, RF-selected, RFE-selected) were split into 80% training and 20% testing sets.
+* **Baseline Model:** A `LogisticRegression` model was trained and evaluated on all three feature sets.
+* **Evaluation:** The `accuracy_score` was used to compare the performance of each feature set.
 
 ---
 
-## 📊 Preliminary Results
+## 📈 Preliminary Results
 
-Initial comparison of a `LogisticRegression` model across the engineered feature sets:
+This baseline evaluation provides a benchmark for all future models. The `LogisticRegression` model's performance on the test set for each feature set was:
 
 | Feature Set | Features | Test Accuracy |
 | :--- | :--- | :--- |
@@ -86,15 +65,28 @@ Initial comparison of a `LogisticRegression` model across the engineered feature
 | **RFE** | 9 Selected Features | 88.52% |
 | **Random Forest** | 9 Selected Features | 86.89% |
 
-*These results will be updated as more models are trained and tuned.*
+These results show that both PCA and RFE provided an excellent, compact feature set for a linear model.
 
 ---
 
-## 🛠️ Key Technologies & Libraries
+## 🛠️ Technologies & Libraries
 
-* **Data:** Pandas, NumPy
-* **Visualization:** Matplotlib, Seaborn
-* **ML & Preprocessing:** Scikit-learn (Sklearn)
-* **Web App:** Streamlit
-* **Deployment:** Ngrok
-* **Notebooks:** Jupyter, `import-ipynb`
+* **Data Manipulation:** Pandas, NumPy
+* **Data Visualization:** Matplotlib, Seaborn
+* **Preprocessing & Modeling:** Scikit-learn (Sklearn)
+    * `StandardScaler`, `RobustScaler`, `OneHotEncoder`
+    * `PCA`, `RFE`, `RandomForestClassifier`, `LogisticRegression`
+    * `train_test_split`, `accuracy_score`
+* **Notebook Modularity:** `import-ipynb`
+
+---
+
+## 💻 How to Run
+
+1.  Clone this repository.
+2.  Install the required libraries:
+    ```bash
+    pip install pandas numpy matplotlib seaborn scikit-learn import-ipynb
+    ```
+3.  Ensure the `processed_cleveland.csv` dataset is located in the correct path.
+4.  Run the main notebook (e.g., `model_training.ipynb`) that imports the other modules (`data_preprocessing`, `pca_analysis`, `feature_selection`).
