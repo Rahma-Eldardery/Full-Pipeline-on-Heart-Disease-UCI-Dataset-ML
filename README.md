@@ -1,20 +1,47 @@
-# 🩺 End-to-End Heart Disease Prediction Pipeline
+# ❤️ Heart Disease Prediction: An End-to-End Medical AI Project
+
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![Scikit-Learn](https://img.shields.io/badge/Library-Scikit--Learn-orange)
+![Status](https://img.shields.io/badge/Status-Completed-success)
 
 This repository contains a machine learning project to predict heart disease using the **Heart Disease UCI dataset**. It implements an end-to-end pipeline, starting from data cleaning and exploratory data analysis (EDA), moving through feature engineering, and concluding with a baseline model evaluation.
+> 🚧 **Current Status:** The project is currently in the **Optimization & Deployment Phase**. We have completed the core modeling and clustering stages.
 
 ---
+## 📅 Project Roadmap & Progress
 
-## 🚀 Project Status
-
-**✅ Completed Stages:**
-* **Data Preprocessing & Cleaning**
-* **Exploratory Data Analysis (EDA)**
-* **Feature Engineering (PCA, RF Importance, RFE)**
-* **Baseline Model Training (Logistic Regression)**
-
-This README reflects all work completed to date. The project is modular, allowing for more models and features to be added.
+| Phase | Task | Status |
+| :--- | :--- | :---: |
+| **Phase 1** | Data Preprocessing & Cleaning | ✅ Completed |
+| **Phase 2** | Exploratory Data Analysis (EDA) | ✅ Completed |
+| **Phase 3** | Feature Engineering (PCA, RFE) | ✅ Completed |
+| **Phase 4** | Supervised Learning (Model Selection) | ✅ Completed |
+| **Phase 5** | Unsupervised Learning (Clustering) | ✅ Completed |
+| **Phase 6** | **Hyperparameter Tuning (GridSearch)** | ⏳ **Next Step** |
+| **Phase 7** | **Building Streamlit UI** | ⏳ **Planned** |
+| **Phase 8** | **Deployment (Ngrok)** | ⏳ **Planned** |
 
 ---
+## 🏆 Current Results (Baseline Models)
+
+We compared 4 different classifiers. **Logistic Regression (with PCA)** is currently the champion model due to its high sensitivity to detecting disease.
+
+| 🥇 Rank | Model | Feature Set | Accuracy | Recall (Sensitivity) | ROC-AUC |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **1st** | **Logistic Regression** | **PCA (10 Comps)** | **90.16%** | **0.91** | **0.93** |
+| **2nd** | SVM | RF Features | 90.16% | 0.88 | 0.94 |
+| **3rd** | Random Forest | PCA | 88.52% | 0.85 | 0.92 |
+| **4th** | Decision Tree | RFE | 78.69% | 0.76 | 0.79 |
+
+> **Medical Insight:** The Champion Model achieved a **Recall of 0.91**, meaning it successfully detected **91% of actual heart patients**.
+
+---
+## 🕵️‍♂️ Unsupervised Learning Insights
+
+We applied **K-Means Clustering (K=2)** to find hidden patterns without using diagnosis labels.
+* **Cluster 1:** Contained **139 Patients** and only 1 Healthy individual.
+* **Result:** The model successfully separated the majority of "High Risk" patients purely based on their medical vitals.
+ --- 
 
 ## 📊 Completed Workflow
 
@@ -48,45 +75,38 @@ Three distinct feature sets were engineered to compare model performance:
     * Used `RFE` with a `LogisticRegression` estimator.
     * Programmatically selected the **top 9 features**.
 
-### 4. Baseline Model Training
-* **Data Split:** All three feature sets (PCA, RF-selected, RFE-selected) were split into 80% training and 20% testing sets.
-* **Baseline Model:** A `LogisticRegression` model was trained and evaluated on all three feature sets.
-* **Evaluation:** The `accuracy_score` was used to compare the performance of each feature set.
+### 4. Supervised Learning (Model Comparison)
+We trained **Logistic Regression, SVM, Random Forest, and Decision Trees** across all feature sets.
+* *Result:* Linear models (LR & SVM) outperformed tree-based models on this dataset.
+
+### 5. Unsupervised Learning (Pattern Discovery) 🕵️‍♂️
+We hid the diagnosis labels and applied Clustering to see if the AI could find natural patterns.
+* **K-Means (K=2):** Validated using the **Elbow Method**.
+* **Hierarchical Clustering:** Validated using the **Dendrogram**.
+* **Insight:** The model successfully grouped **128 healthy individuals** into a single pure cluster, proving the data has strong natural separability.
 
 ---
 
-## 📈 Preliminary Results
+## 🛠️ Technologies & Tools Used
 
-This baseline evaluation provides a benchmark for all future models. The `LogisticRegression` model's performance on the test set for each feature set was:
-
-| Feature Set | Features | Test Accuracy |
+| Category | Library/Tool | Purpose |
 | :--- | :--- | :--- |
-| **PCA** | 10 Components | 88.52% |
-| **RFE** | 9 Selected Features | 88.52% |
-| **Random Forest** | 9 Selected Features | 86.89% |
+| **Language** | ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white) | The core programming language. |
+| **Data Manipulation** | **Pandas & NumPy** | For data cleaning, handling missing values, and numerical operations. |
+| **Visualization** | **Matplotlib & Seaborn** | For generating heatmaps, boxplots, and distributions during EDA. |
+| **Machine Learning** | **Scikit-Learn** | The main engine for PCA, RFE, GridSearch, Clustering, and Models (LR, SVM, RF). |
+| **Scientific Computing** | **SciPy** | Used for hierarchical clustering and dendrograms. |
+| **Environment** | **Jupyter Notebook** | For interactive coding and experimentation. |
 
-These results show that both PCA and RFE provided an excellent, compact feature set for a linear model.
 
----
-
-## 🛠️ Technologies & Libraries
-
-* **Data Manipulation:** Pandas, NumPy
-* **Data Visualization:** Matplotlib, Seaborn
-* **Preprocessing & Modeling:** Scikit-learn (Sklearn)
-    * `StandardScaler`, `RobustScaler`, `OneHotEncoder`
-    * `PCA`, `RFE`, `RandomForestClassifier`, `LogisticRegression`
-    * `train_test_split`, `accuracy_score`
-* **Notebook Modularity:** `import-ipynb`
 
 ---
 
-## 💻 How to Run
+### 👨‍💻 Author
 
-1.  Clone this repository.
-2.  Install the required libraries:
-    ```bash
-    pip install pandas numpy matplotlib seaborn scikit-learn import-ipynb
-    ```
-3.  Ensure the `processed_cleveland.csv` dataset is located in the correct path.
-4.  Run the main notebook (e.g., `model_training.ipynb`) that imports the other modules (`data_preprocessing`, `pca_analysis`, `feature_selection`).
+**Developed by [Rahma Eldardery]**
+
+If you found this project useful or interesting, please consider giving it a ⭐!
+Your support is greatly appreciated.
+
+---
